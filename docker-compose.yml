@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env-non-dev
+
+  web-app:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: stripe_project
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
